@@ -1,0 +1,23 @@
+name: PR to main guard
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Allow only stg -> main
+        run: |
+          echo "Base: ${{ github.base_ref }}"
+          echo "Head: ${{ github.head_ref }}"
+
+          if [ "${{ github.head_ref }}" != "stg" ]; then
+            echo "Only stg branch can be merged into main"
+            exit 1
+          fi
+
+          echo "stg -> main allowed"
+
