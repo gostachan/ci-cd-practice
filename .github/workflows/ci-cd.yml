@@ -1,26 +1,35 @@
-name: Minimal CI/CD
+name: CI/CD by branch
+
 on:
   push:
     branches:
       - main
+      - stg
 
 jobs:
-  ci:
+  test:
+    if: github.ref == 'refs/heads/stg'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: CI step
+      - uses: actions/checkout@v4
+      - name: Run tests
         run: |
-          echo "CI: test passed"
-          exit 1
+          echo "test running on stg"
 
-  cd:
-    needs: ci
+  deploy-stg:
+    if: github.ref == 'refs/heads/stg'
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: CD step
+      - name: Deploy to staging
         run: |
-          echo "CD: deployed"
+          echo "deployed to STG"
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        run: |
+          echo "deployed to PROD"
 
