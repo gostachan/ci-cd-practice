@@ -1,15 +1,23 @@
-name: Production Deploy
+name: PR to main guard
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
 jobs:
-  deploy:
+  guard:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: |
-          echo "deployed to PROD"
+      - name: Allow only stg -> main
+        run: |
+          echo "Base: ${{ github.base_ref }}"
+          echo "Head: ${{ github.head_ref }}"
+
+          if [ "${{ github.head_ref }}" != "stg" ]; then
+            echo "Only stg branch can be merged into main"
+            exit 1
+          fi
+
+          echo "stg -> main allowed"
 
