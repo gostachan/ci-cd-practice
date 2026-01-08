@@ -1,0 +1,22 @@
+name: Staging CI/CD
+
+on:
+  push:
+    branches:
+      - stg
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "test on STG"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "deployed to STG"
+
