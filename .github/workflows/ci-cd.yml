@@ -14,6 +14,7 @@ jobs:
       - name: CI step
         run: |
           echo "CI: test passed"
+          exit 1
 
   cd:
     needs: ci
