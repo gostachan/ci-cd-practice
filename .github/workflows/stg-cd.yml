@@ -1,0 +1,12 @@
+name: Staging Deploy
+
+on:
+  push:
+    branches: [stg]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "deployed to STG"
+
